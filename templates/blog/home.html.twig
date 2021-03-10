@@ -1,17 +1,27 @@
-<h1>{{ title }}</h1>
+{% extends "base.html.twig" %}
 
-{% if age > 18 %}
-    <p>Tu es majeur !</p>
-{% else %}
-    <p>Tu es mineur !</p>
-{% endif %}
+{% block body %}
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, quo ullam iure nulla enim voluptatum. Quam voluptates aliquam beatae officiis inventore? Perspiciatis quam nobis ea similique blanditiis optio quos quis.
-Ad magnam quis totam obcaecati magni eligendi. Asperiores sapiente repudiandae laboriosam deleniti dolore dicta aspernatur inventore ullam pariatur est magnam accusantium, corrupti assumenda, officiis modi qui explicabo. Sequi, aliquam iusto.
-Aliquam neque tempora et reprehenderit dicta dolorum saepe laborum architecto, officia minus laudantium odio illo sint! Et corrupti ducimus minima, ut a dolore cumque illo deserunt voluptates libero accusantium ratione.
-Nihil libero aut aperiam eum ea incidunt neque facilis, tenetur, sunt repellendus dolores consectetur quis odio autem natus, illum explicabo qui molestiae voluptas laudantium tempora vitae cupiditate eius eveniet? Velit?
-Magni, rerum mollitia quis nemo exercitationem ipsa, quaerat eaque doloremque quas sed accusantium a corporis voluptatem pariatur autem debitis placeat nostrum alias repellat consequatur animi similique itaque velit! Maxime, consectetur. Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae voluptatem magnam corporis? Eaque aut placeat sapiente labore quas nemo! Ipsa necessitatibus temporibus consequatur quos nisi illo esse corrupti delectus dolorem.
-Soluta facilis obcaecati ullam, aperiam harum dignissimos blanditiis ab nam at saepe. Ipsum, minima temporibus autem, ullam distinctio quasi corporis voluptates nostrum in quisquam nemo vero ipsam? In, eius illum?
-Magnam nulla cum laudantium cupiditate velit nemo laborum in dolore perferendis animi deserunt, adipisci eaque sunt quasi iusto culpa voluptatum unde pariatur quo similique doloremque obcaecati itaque atque non. Eligendi.
-Adipisci perspiciatis esse unde, praesentium ab rerum omnis ducimus doloribus in provident nisi earum ex corporis voluptates ratione reiciendis, voluptatum voluptas optio quaerat minus quia sequi eius id incidunt? Eveniet!
-Tempora eveniet, nisi quae facilis vel dolorum similique esse repellat voluptates atque unde velit distinctio praesentium dolore fugit reiciendis vero consequatur nulla quod. Illo velit maiores ducimus sequi reiciendis eius. 
+<div class="container">
+
+    <h1>{{ title }}</h1>
+
+    {% if age > 18 %}
+        <p>Tu es majeur !</p>
+    {% else %}
+        <p>Tu es mineur !</p>
+    {% endif %}
+
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, quo ullam iure nulla enim voluptatum. Quam voluptates aliquam beatae officiis inventore? Perspiciatis quam nobis ea similique blanditiis optio quos quis.
+    Ad magnam quis totam obcaecati magni eligendi. Asperiores sapiente repudiandae laboriosam deleniti dolore dicta aspernatur inventore ullam pariatur est magnam accusantium, corrupti assumenda, officiis modi qui explicabo. Sequi, aliquam iusto.
+    Aliquam neque tempora et reprehenderit dicta dolorum saepe laborum architecto, officia minus laudantium odio illo sint! Et corrupti ducimus minima, ut a dolore cumque illo deserunt voluptates libero accusantium ratione.
+    Nihil libero aut aperiam eum ea incidunt neque facilis, tenetur, sunt repellendus dolores consectetur quis odio autem natus, illum explicabo qui molestiae voluptas laudantium tempora vitae cupiditate eius eveniet? Velit?
+    Magni, rerum mollitia quis nemo exercitationem ipsa, quaerat eaque doloremque quas sed accusantium a corporis voluptatem pariatur autem debitis placeat nostrum alias repellat consequatur animi similique itaque velit! Maxime, consectetur. Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae voluptatem magnam corporis? Eaque aut placeat sapiente labore quas nemo! Ipsa necessitatibus temporibus consequatur quos nisi illo esse corrupti delectus dolorem.
+    Soluta facilis obcaecati ullam, aperiam harum dignissimos blanditiis ab nam at saepe. Ipsum, minima temporibus autem, ullam distinctio quasi corporis voluptates nostrum in quisquam nemo vero ipsam? In, eius illum?
+    Magnam nulla cum laudantium cupiditate velit nemo laborum in dolore perferendis animi deserunt, adipisci eaque sunt quasi iusto culpa voluptatum unde pariatur quo similique doloremque obcaecati itaque atque non. Eligendi.
+    Adipisci perspiciatis esse unde, praesentium ab rerum omnis ducimus doloribus in provident nisi earum ex corporis voluptates ratione reiciendis, voluptatum voluptas optio quaerat minus quia sequi eius id incidunt? Eveniet!
+    Tempora eveniet, nisi quae facilis vel dolorum similique esse repellat voluptates atque unde velit distinctio praesentium dolore fugit reiciendis vero consequatur nulla quod. Illo velit maiores ducimus sequi reiciendis eius.
+
+</div>
+
+{% endblock %}
