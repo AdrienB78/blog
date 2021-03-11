@@ -5,9 +5,16 @@
 {% endblock %}
 
 {% block body %}
-    <h1 class="display-4 text-center my-5"> Création d'un nouvel article </h1>
 
-    <form method="post" class="col-md-5 mx-auto">
+            <h1 class="display-4 text-center my-5">    
+        {% if editMode %}
+            Modification de l'article n°{{ editMode }}
+        {% else %}
+            Création d'un nouvel article
+        {% endif %}
+            </h1>
+
+    {# <form method="post" class="col-md-5 mx-auto">
         <div class="form-group">
             <label for="title">Titre :</label>
             <input type="text" class="form-control" id="title" name="title">
@@ -21,5 +28,22 @@
             <input type="text" class="form-control" id="image" name="image">
         </div>
         <button type="submit" class="btn btn-secondary mb-5">Enregistrer mon article</button>
-    </form>
+    </form> #}
+
+    {{ form_start(formArticle, {'attr' : {'class' : 'col-md-5 mx-auto'} }) }}
+
+        {{ form_row(formArticle.title, {'attr' : {'placeholder' : "Saisir le titre de l'article", "maxlength" : false, "pattern" : false}, 'label' : "Titre de l'article :" }) }}
+        {{ form_row(formArticle.content, {'attr' : {'placeholder' : "Saisir le contenu de l'article", 'rows' : 15 }, 'label' : "Contenu de l'article :" }) }}
+        {{ form_row(formArticle.image , {'attr' : {'placeholder' : "Saisir l'URL de l'image"}, 'label' : "URL de l'image :" }) }}
+
+            <button type="submit" class="btn btn-secondary">
+        {% if editMode %}
+            Enregistrer les modifications
+        {% else %}
+            Création du nouvel article
+        {% endif %}
+            </button>
+    
+    {{ form_end(formArticle) }}
+
 {% endblock %}
