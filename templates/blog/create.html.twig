@@ -33,10 +33,11 @@
     {{ form_start(formArticle, {'attr' : {'class' : 'col-md-5 mx-auto'} }) }}
 
         {{ form_row(formArticle.title, {'attr' : {'placeholder' : "Saisir le titre de l'article", "maxlength" : false, "pattern" : false}, 'label' : "Titre de l'article :" }) }}
+        {{ form_row(formArticle.category, {'label' : "Choisir une catégorie"}) }}
         {{ form_row(formArticle.content, {'attr' : {'placeholder' : "Saisir le contenu de l'article", 'rows' : 15 }, 'label' : "Contenu de l'article :" }) }}
         {{ form_row(formArticle.image , {'attr' : {'placeholder' : "Saisir l'URL de l'image"}, 'label' : "URL de l'image :" }) }}
 
-            <button type="submit" class="btn btn-secondary">
+            <button type="submit" class="btn btn-secondary mb-5">
         {% if editMode %}
             Enregistrer les modifications
         {% else %}

@@ -8,6 +8,10 @@
 
     <h1 class="display-4 text-center my-5">Détails de l'article {{ articleTwig.id }} </h1>
 
+    {% for message in app.flashes('success') %}
+        <div class="col-md-3 bg-success p-4 rounded mx-auto text-center text-white mb-3">{{ message }}</div>
+    {% endfor %}
+
     <div class="album py-5 bg-light">
     
         <div class="row">
@@ -18,12 +22,39 @@
   
               <div class="card-body">
                 <h4 class="text-center">{{ articleTwig.title }}</h4><hr>
-                <p class="card-text"> {{ articleTwig.content | striptags }}</p>
+                <p class="card-text"> {{ articleTwig.content | raw }}</p>
                 <div class="d-flex justify-content-end align-items-center">
-                  <small class="text-muted"> Posté le : {{ articleTwig.createdAt | date("d/m/Y") }} à {{ articleTwig.createdAt | date("H:i:s")}} </small>
+                  <small class="text-muted"> Posté le : {{ articleTwig.createdAt | date("d/m/Y") }} à {{ articleTwig.createdAt | date("H:i:s")}} dans la catégorie : {{ articleTwig.category.title }} </small>
                 </div>
               </div>
             </div>
+                    <h4 class="my-5 text-center"> Donnez vos avis ! </h4>
+
+                {{ form_start(formContent, {'attr' : {'class' : 'col-md-5 mx-auto'} }) }}
+
+                    {{ form_row(formContent.author, {'label' : "Nom d'utilisateur :"}) }}
+                    {{ form_row(formContent.content, {'label' : "Saisir votre commentaire :"}) }}
+
+                        <button type="submit" class="btn btn-secondary mb-5"> Enregistrer les modifications </button>
+    
+                {{ form_end(formContent) }} 
+              
+              <h4 class="my-5 text-center"> Vos réactions ... </h4>
+              <div class="row mb-4">
+
+                  {% for comment in articleTwig.comments %}
+
+                    <div class="col-md-4 py-2">
+                        <span><strong> {{ comment.author }} </strong> </span>
+                        <small class="font-italic"> Posté le : {{ comment.createdAt | date("d/m/Y") }} à {{ articleTwig.createdAt | date("H:i:s") }} </small>
+                    </div>
+                    <div class="col-md-8 py-2">
+                        {{ comment.content | striptags }}
+                    </div> <hr class="col-md-10 bg-light">
+
+                  {% endfor %}
+
+              </div>
           </div>
 
         </div>
