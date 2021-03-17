@@ -6,14 +6,16 @@ use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class AdminFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('description')
+            ->add('title', TextType::class)
+            ->add('description', TextareaType::class)
         ;
     }
 
@@ -21,6 +23,7 @@ class AdminFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Category::class,
+            'validation_groups' => ['category']
         ]);
     }
 }

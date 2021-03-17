@@ -3,10 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Comment;
 use App\Entity\Category;
 use App\Form\AdminFormType;
+use App\Form\AddCommentType;
 use App\Form\ArticleFormType;
 use App\Repository\ArticleRepository;
+use App\Repository\CommentRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,12 +89,20 @@ class AdminController extends AbstractController
 
         if($categorys)
         {
-            $nomCategory = $categorys->getTitle();
-            $manager->remove($categorys);
-            $manager->flush();
+            if($categorys->getArticles()->isEmpty())
+            {
+                $nomCategory = $categorys->getTitle();
+                $manager->remove($categorys);
+                $manager->flush();
 
-            $this->addFlash('success', "La catégorie " . $nomCategory. " a bien été supprimé !");
-            return $this->redirectToRoute('admin_articles');
+                $this->addFlash('success', "La catégorie " . $nomCategory. " a bien été supprimé !");
+                
+            }
+            else
+            {
+                $this->addFlash("danger", "Il n'est pas possible de supprimer la catégorie car il reste des articles associés à celle ci");
+            }
+            return $this->redirectToRoute('admin_categories');
         }
 
         return $this->render('admin/admin_category.html.twig', [
@@ -104,11 +115,85 @@ class AdminController extends AbstractController
      * @Route("/admin/categories-new", name="admin_new_categories")
      * @Route("/admin/{id}/categories-edit", name="admin_edit_categories")
      */
-    public function adminFormCategory(Request $request, EntityManagerInterface $manager, Category $category): Response
+    public function adminFormCategory(Request $request, EntityManagerInterface $manager, Category $category = null): Response
     {
-        $formCategory = $this->createForm(AdminFormType::class, $category);
+        if(!$category)
+        {
+            $category = new Category;
+        }
+
+        $formCategory = $this->createForm(AdminFormType::class, $category, [
+            'validation_groups' => ['category']
+        ]);
         $formCategory->handleRequest($request);
+
+        if($formCategory->isSubmitted() && $formCategory->isValid())
+        {
+            if(!$category->getId())
+            {
+                $message = "La catégorie " . $category->getTitle() . " a été enregistré avec succés !";
+            }
+            else
+            {
+                $message = "La catégorie " . $category->getTitle() . " a été modifié avec succés !";
+            }
+
+            $manager->persist($category);
+            $manager->flush();
+
+            $this->addFlash('success', $message);
+            return $this->redirectToRoute('admin_categories');
+        }
         
-        return $this->render('admin/admin_form_category.html.twig');
+        return $this->render('admin/admin_form_category.html.twig',[
+            'formCategory' => $formCategory->createView()
+        ]);
     }
+
+    /**
+     * @Route("/admin/comments", name="admin_comments")
+     * @Route("/admin/comment/{id}/remove", name="admin_remove_comments")
+     */
+    public function adminComment(EntityManagerInterface $manager, CommentRepository $repoComments, Comment $comment = null): Response
+    {
+        $colonnes = $manager->getClassMetadata(Comment::class)->getFieldNames();
+        $comments = $repoComments->findAll();
+
+        if($comment)
+        {
+            $manager->remove($comment);
+            $manager->flush();
+
+            $this->addFlash('success', "Le commentaire a bien été supprimé !");
+            return $this->redirectToRoute('admin_comments');
+        }
+
+        return $this->render('admin/admin_comments.html.twig', [
+            'colonnes' => $colonnes,
+            'comments' => $comments
+        ]);
+    }
+
+    /**
+     * @Route("/admin/comment/{id}/edit", name="admin_edit_comment")
+     */
+    public function editComment(Comment $comment, Request $request, EntityManagerInterface $manager): Response
+    {
+        $formComment = $this->createForm(AddCommentType::class, $comment);
+        $formComment->handleRequest($request);
+
+        if($formComment->isSubmitted() && $formComment->isValid())
+        {
+            $manager->persist($comment);
+            $manager->flush();
+            
+            $this->addFlash('success', "Le commentaire a bien été modifié !");
+            return $this->redirectToRoute('admin_comments');
+        }
+        
+        return $this->render('admin/admin_edit_comment.html.twig', [
+            'formComment' => $formComment->createView()
+        ]);
+    }
+
 }

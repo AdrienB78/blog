@@ -6,26 +6,40 @@
 
     <h1 class="display-4 text-center my-5"> Modification d'une catégorie </h1>
 
+            {% for label, messages in app.flashes(['success', 'danger']) %}
+
+                {% for oneMessage in messages %}
+                    <div class="col-md-3 bg-{{label}} p-4 rounded mx-auto text-center text-white mb-3"> {{ oneMessage }} </div>
+                {% endfor %}
+
+            {% endfor %}
+
+            <p class="text-center"> <small><a href="{{ path("admin_new_categories") }}" class="btn btn-secondary btn-sm">Nouvelle catégorie</a></small> </p>
+
         <table class="table table-bordered text-center col-md-9 mx-auto">
 
             <tr>
                 {% for oneColonne in colonnes %}
 
-                    {% if oneColonne != 'id' %}
+                    {% if oneColonne == 'title' %}
+                        <th> TITRE </th>
+                    {% elseif oneColonne != 'id' %}
                         <th> {{ oneColonne | upper }} </th>
                     {% endif %}
 
                 {% endfor %}
                     <th> MODIFICATION </th>
                     <th> SUPPRESSION </th>
+                    <th> NB ARTICLES </th>
             </tr>
 
             {% for oneCategorie in category %}
                 <tr>
                     <td> {{ oneCategorie.title }}  </td>
                     <td> {{ oneCategorie.description }} </td>
-                    <td> <a href="" class="btn btn-info"><i class="fas fa-edit"></i></a> </td>
+                    <td> <a href="{{ path("admin_edit_categories", {"id" : oneCategorie.id}) }}" class="btn btn-info"><i class="fas fa-edit"></i></a> </td>
                     <td> <a href="{{ path("admin_remove_categories", {'id': oneCategorie.id}) }}" class="btn btn-danger" onclick="return(confirm('Voulez-vous vraiment supprimer cette catégorie ?'))"><i class="fas fa-trash-alt"></i></a> </td>
+                    <td> {{ oneCategorie.articles | length }} </td>
                 </tr>
             {% endfor %}
 
