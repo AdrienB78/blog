@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Modification d'un commentaire {% endblock %}
+
+{% block body %}
+
+    <h1 class="display-4 text-center my-5"> Modifier un commentaire </h1>
+
+    {{ form_start(formComment, {'attr' : {'class' : 'col-md-5 mx-auto'} }) }}
+
+        {{ form_row(formComment.author, {'label' : "Auteur :" }) }}
+        {{ form_row(formComment.content, {'label' : "Contenu :" }) }}
+        <button class="btn btn-secondary mb-5"> Modifier le commentaire </button>
+
+    {{ form_end(formComment) }}
+
+{% endblock %}
