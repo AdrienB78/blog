@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Article;
 use App\Entity\Comment;
 use App\Entity\Category;
 use App\Form\AdminFormType;
 use App\Form\AddCommentType;
+use App\Form\AdminRegistrationFormType;
 use App\Form\ArticleFormType;
+use App\Repository\UserRepository;
 use App\Repository\ArticleRepository;
 use App\Repository\CommentRepository;
 use App\Repository\CategoryRepository;
@@ -193,6 +196,52 @@ class AdminController extends AbstractController
         
         return $this->render('admin/admin_edit_comment.html.twig', [
             'formComment' => $formComment->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/admin/users", name="admin_users")
+     * @Route("/admin/user/{id}/remove", name="admin_remove_user")
+     */
+    public function adminUsers(EntityManagerInterface $manager, UserRepository $repoUsers, User $userbdd = null): Response
+    {
+        $colonnes = $manager->getClassMetadata(User::class)->getFieldNames();
+        $user = $repoUsers->findAll();
+
+        if($userbdd)
+        {
+            $manager->remove($userbdd);
+            $manager->flush();
+
+            $this->addFlash("success", "L'utilisateur a été supprimé avec succès !");
+            return $this->redirectToRoute("admin_users");
+        }
+
+        return $this->render('admin/admin_users.html.twig', [
+            "colonnes" => $colonnes,
+            "users" => $user
+        ]);
+    }
+
+    /**
+    * @Route("/admin/user/{id}/edit", name="admin_edit_user")
+    */
+    public function adminUserEdit(User $user, Request $request, EntityManagerInterface $manager): Response
+    {
+        $formUser = $this->createForm(AdminRegistrationFormType::class, $user);
+        $formUser->handleRequest($request);
+
+        if($formUser->isSubmitted() && $formUser->isValid())
+        {
+            $manager->persist($user);
+            $manager->flush();
+
+            $this->addFlash("success", "La modification a été effectuée !");
+            return $this->redirectToRoute('admin_users');
+        }
+
+        return $this->render("admin/admin_edit_user.html.twig", [
+            'formUser' => $formUser->createView()
         ]);
     }
 

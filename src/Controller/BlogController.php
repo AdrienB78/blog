@@ -14,6 +14,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class BlogController extends AbstractController
 {
@@ -44,7 +47,7 @@ class BlogController extends AbstractController
      * @Route("/blog/new", name="blog_create")
      * @Route("/blog/{id}/edit", name="blog_edit")
      */
-    public function create(Article $articleCreate = null, Request $request, EntityManagerInterface $manager): Response
+    public function create(Article $articleCreate = null, Request $request, EntityManagerInterface $manager, SluggerInterface $slugger): Response
     {
        /* if($request->request->count() > 0)
         {
@@ -84,6 +87,31 @@ class BlogController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
+           /** @var UploadedFile $imageFile */
+
+           $imageFile = $form->get('image')->getData();
+
+           if($imageFile)
+           {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+
+                $newFilename = $safeFilename . '-' . uniqid() . '-' . $imageFile->guessExtension();
+
+                try
+                {
+                    $imageFile->move(
+                        $this->getParameter('image_directory'),
+                        $newFilename
+                    );
+                }
+                catch(FileException $e)
+                {
+
+                }
+
+                $articleCreate->setImage($newFilename);
+           }
 
             if(!$articleCreate->getId())
             {
