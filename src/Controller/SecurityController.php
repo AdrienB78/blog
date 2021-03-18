@@ -21,13 +21,16 @@ class SecurityController extends AbstractController
     {
 
     $user = new User;
-    $formUser = $this->createForm(RegistrationType::class, $user);
+    $formUser = $this->createForm(RegistrationType::class, $user, [
+        'validation_groups' => ['registration']
+    ]);
     $formUser->handleRequest($request);
 
     if($formUser->isSubmitted() && $formUser->isValid())
     {
         $hash = $encoder->encodePassword($user, $user->getPassword());
         $user->setPassword($hash);
+        $user->setRoles(["ROLE_USER"]);
         
         $manager->persist($user);
         $manager->flush();

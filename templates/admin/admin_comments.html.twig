@@ -34,7 +34,7 @@
                         <td> {{oneComment.createdAt | date("d/m/Y") }} </td>
                         <td> {{oneComment.article.title}} </td>
                         <td> <a href="{{ path("admin_edit_comment", {"id" : oneComment.id}) }}" class="btn btn-info"><i class="fas fa-edit"></i></a> </td>
-                        <td> <a href="{{ path("admin_remove_comments", {"id" : oneComment.id}) }}" class="btn btn-danger" onclick="return(confirm('Voulez-vous vraiment supprimer cette catégorie ?'))"><i class="fas fa-trash-alt"></i></a> </td>
+                        <td> <a href="{{ path("admin_remove_comments", {"id" : oneComment.id}) }}" class="btn btn-danger" onclick="return(confirm('Voulez-vous vraiment supprimer ce commentaire ?'))"><i class="fas fa-trash-alt"></i></a> </td>
                     </tr>
                 {% endfor %}
             
